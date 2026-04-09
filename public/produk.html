@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Semua Produk - MalzzPedia</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <span class="logo-icon"><i class="fas fa-fire"></i></span>
+        <span class="logo-text">Malzz<span class="logo-accent">Pedia</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Beranda</a>
+        <a href="/products" class="nav-link active">Produk</a>
+        <a href="/panduan" class="nav-link">Panduan</a>
+        <a href="/status" class="nav-link">Cek Status</a>
+      </div>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="/" class="mobile-link">Beranda</a>
+      <a href="/products" class="mobile-link">Produk</a>
+      <a href="/panduan" class="mobile-link">Panduan</a>
+      <a href="/status" class="mobile-link">Cek Status</a>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <h1>Semua Produk Game</h1>
+      <p>Pilih game favoritmu dan mulai top up sekarang</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container">
+      <div class="search-wrap">
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Cari nama game..." />
+        </div>
+      </div>
+      <div class="games-grid" id="gamesGrid">
+        <div class="card-skeleton"></div>
+        <div class="card-skeleton"></div>
+        <div class="card-skeleton"></div>
+        <div class="card-skeleton"></div>
+        <div class="card-skeleton"></div>
+        <div class="card-skeleton"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="/" class="nav-logo">
+          <span class="logo-icon"><i class="fas fa-fire"></i></span>
+          <span class="logo-text">Malzz<span class="logo-accent">Pedia</span></span>
+        </a>
+        <p>Platform top up game terpercaya.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Menu</h4>
+        <a href="/">Beranda</a>
+        <a href="/products">Produk</a>
+        <a href="/panduan">Panduan</a>
+        <a href="/status">Cek Status</a>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2025 MalzzPedia. All rights reserved.</p></div>
+  </footer>
+
+  <script>
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileMenu').classList.toggle('active'));
+
+    let allProducts = [];
+    const BADGE_CLS = ['badge-hot','badge-new','badge-sale'];
+    const BADGE_LBL = ['HOT','NEW','SALE'];
+
+    function renderProducts(list) {
+      const grid = document.getElementById('gamesGrid');
+      if (!list.length) {
+        grid.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>Tidak ada produk ditemukan</p></div>';
+        return;
+      }
+      grid.innerHTML = list.map((p, i) => {
+        const bc = BADGE_CLS[i] || '';
+        const bl = BADGE_LBL[i] || '';
+        return `
+          <a href="/topup?product=${p._id}" class="game-card">
+            ${bc ? `<span class="game-badge ${bc}">${bl}</span>` : ''}
+            <div class="game-thumb">
+              ${p.imageurl
+                ? `<img class="game-thumb-img" src="${p.imageurl}" alt="${p.nama}" onerror="this.parentElement.innerHTML='<div class=game-thumb-placeholder><i class=fas fa-gamepad></i></div>'" />`
+                : `<div class="game-thumb-placeholder"><i class="fas fa-gamepad"></i></div>`}
+            </div>
+            <div class="game-info">
+              <div class="game-name">${p.nama}</div>
+              <div class="game-desc">${p.deks || 'Top Up Game'}</div>
+              <div class="game-btn"><i class="fas fa-bolt"></i> Top Up Sekarang</div>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    async function loadProducts() {
+      try {
+        const res = await fetch('/produk');
+        const data = await res.json();
+        allProducts = data.data || [];
+        renderProducts(allProducts);
+      } catch(e) {
+        document.getElementById('gamesGrid').innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Gagal memuat produk</p></div>';
+      }
+    }
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase();
+      renderProducts(allProducts.filter(p => p.nama.toLowerCase().includes(q) || (p.deks||'').toLowerCase().includes(q)));
+    });
+
+    loadProducts();
+  </script>
+</body>
+</html>
