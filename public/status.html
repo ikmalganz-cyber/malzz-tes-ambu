@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cek Status Order - MalzzPedia</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <span class="logo-icon"><i class="fas fa-fire"></i></span>
+        <span class="logo-text">Malzz<span class="logo-accent">Pedia</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Beranda</a>
+        <a href="/products" class="nav-link">Produk</a>
+        <a href="/panduan" class="nav-link">Panduan</a>
+        <a href="/status" class="nav-link active">Cek Status</a>
+      </div>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="/" class="mobile-link">Beranda</a>
+      <a href="/products" class="mobile-link">Produk</a>
+      <a href="/panduan" class="mobile-link">Panduan</a>
+      <a href="/status" class="mobile-link">Cek Status</a>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <h1>Cek Status Order</h1>
+      <p>Masukkan ID Order untuk mengecek status transaksi kamu</p>
+    </div>
+  </div>
+
+  <div class="status-section">
+    <div class="container-sm">
+
+      <div class="result-card success-card" id="autoResult" style="display:none;margin-bottom:20px;">
+        <div class="result-icon"><i class="fas fa-check-circle"></i></div>
+        <h2>Top Up Berhasil!</h2>
+        <p id="autoResultMsg">Order kamu telah berhasil diproses.</p>
+        <a href="/products" class="btn btn-primary"><i class="fas fa-gamepad"></i> Top Up Lagi</a>
+      </div>
+
+      <div class="form-card">
+        <h3><i class="fas fa-search"></i> Cek Status Transaksi</h3>
+        <div class="form-group">
+          <label>ID Order</label>
+          <input type="text" id="orderIdInput" placeholder="Masukkan ID Order kamu..." />
+        </div>
+        <button class="btn btn-primary btn-full" onclick="cekStatus()">
+          <i class="fas fa-search"></i> Cek Status Sekarang
+        </button>
+      </div>
+
+      <div id="statusResult" style="display:none;margin-top:16px;"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="/" class="nav-logo">
+          <span class="logo-icon"><i class="fas fa-fire"></i></span>
+          <span class="logo-text">Malzz<span class="logo-accent">Pedia</span></span>
+        </a>
+        <p>Platform top up game terpercaya.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Menu</h4>
+        <a href="/">Beranda</a>
+        <a href="/products">Produk</a>
+        <a href="/panduan">Panduan</a>
+        <a href="/status">Cek Status</a>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2025 MalzzPedia. All rights reserved.</p></div>
+  </footer>
+
+  <script>
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileMenu').classList.toggle('active'));
+
+    const params = new URLSearchParams(location.search);
+    const orderResult = JSON.parse(sessionStorage.getItem('orderResult') || 'null');
+
+    if (orderResult?.success) {
+      document.getElementById('autoResult').style.display = 'block';
+      document.getElementById('autoResultMsg').textContent = `Top up ${orderResult.layananName || ''} ke ID ${orderResult.tujuan || ''} berhasil!`;
+      sessionStorage.removeItem('orderResult');
+    }
+
+    if (params.get('orderId')) {
+      document.getElementById('orderIdInput').value = params.get('orderId');
+      setTimeout(cekStatus, 300);
+    }
+
+    async function cekStatus() {
+      const id = document.getElementById('orderIdInput').value.trim();
+      if (!id) return;
+      const resultDiv = document.getElementById('statusResult');
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = '<div class="loading-state"><div class="spinner"></div><p>Mengecek status...</p></div>';
+      try {
+        const res = await fetch(`/api/cek-status-order?orderId=${id}`);
+        const data = await res.json();
+        const d = data?.data;
+        const status = d?.status || 'unknown';
+        const sm = {
+          success: { icon: 'check-circle', label: 'Berhasil', cls: 'success' },
+          pending: { icon: 'clock', label: 'Sedang Diproses', cls: 'pending' },
+          process: { icon: 'sync fa-spin', label: 'Sedang Diproses', cls: 'pending' },
+          failed: { icon: 'times-circle', label: 'Gagal', cls: 'error' }
+        };
+        const s = sm[status] || { icon: 'question-circle', label: status, cls: 'pending' };
+        resultDiv.innerHTML = `
+          <div class="result-card ${s.cls}-card">
+            <div class="result-icon"><i class="fas fa-${s.icon}"></i></div>
+            <h3>Status: ${s.label}</h3>
+            ${d ? `<div class="result-details">
+              ${d.name ? `<div class="detail-row"><span>Produk</span><strong>${d.name}</strong></div>` : ''}
+              ${d.target ? `<div class="detail-row"><span>Tujuan</span><strong>${d.target}</strong></div>` : ''}
+              ${d.price ? `<div class="detail-row"><span>Harga</span><strong>Rp ${parseInt(d.price).toLocaleString('id-ID')}</strong></div>` : ''}
+              ${d.sn ? `<div class="detail-row"><span>Serial Number</span><strong style="word-break:break-all;">${d.sn}</strong></div>` : ''}
+            </div>` : ''}
+            ${status === 'success' ? `<a href="/products" class="btn btn-primary" style="margin-top:8px;"><i class="fas fa-gamepad"></i> Top Up Lagi</a>` : ''}
+          </div>`;
+      } catch(e) {
+        resultDiv.innerHTML = '<div class="error-state"><i class="fas fa-exclamation-circle"></i><p>Gagal mengecek status. Coba beberapa saat lagi.</p></div>';
+      }
+    }
+  </script>
+</body>
+</html>
