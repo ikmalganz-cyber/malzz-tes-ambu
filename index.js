@@ -307,7 +307,7 @@ app.get('/', (req, res) => {
 
 if (require.main === module) {
     app.listen(PORT, () => {
-        console.log(`Server berjalan di http://localhost:${PORT}`);
+        console.log(`Server berjalan di http://malzz-tes-ambu.vercel.app:${PORT}`);
     });
 }
 
