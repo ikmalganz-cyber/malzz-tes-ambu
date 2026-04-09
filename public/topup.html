@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Top Up - MalzzPedia</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <span class="logo-icon"><i class="fas fa-fire"></i></span>
+        <span class="logo-text">Malzz<span class="logo-accent">Pedia</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Beranda</a>
+        <a href="/products" class="nav-link">Produk</a>
+        <a href="/panduan" class="nav-link">Panduan</a>
+        <a href="/status" class="nav-link">Cek Status</a>
+      </div>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="/" class="mobile-link">Beranda</a>
+      <a href="/products" class="mobile-link">Produk</a>
+      <a href="/panduan" class="mobile-link">Panduan</a>
+      <a href="/status" class="mobile-link">Cek Status</a>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <a href="/products" class="back-btn"><i class="fas fa-arrow-left"></i> Kembali ke Produk</a>
+      <h1 id="productTitle">Top Up Game</h1>
+      <p id="productDesc">Pilih nominal dan selesaikan pembayaran</p>
+    </div>
+  </div>
+
+  <div class="topup-section">
+    <div class="container">
+      <div class="topup-layout">
+        <div class="topup-left">
+
+          <!-- PRODUCT DETAIL -->
+          <div class="product-detail-card" id="productDetail" style="display:none;">
+            <img id="productImage" src="" alt="" />
+            <div>
+              <h4 id="detailName"></h4>
+              <p id="detailDesc"></p>
+            </div>
+          </div>
+
+          <!-- ID INPUT -->
+          <div class="form-card">
+            <h3><i class="fas fa-id-card"></i> Masukkan ID Akun Game</h3>
+            <div class="form-group">
+              <label>User ID / ID Game</label>
+              <input type="text" id="tujuan" placeholder="Contoh: 123456789" />
+            </div>
+            <div class="form-note"><i class="fas fa-info-circle"></i> Pastikan ID yang dimasukkan benar — top up tidak bisa dikembalikan</div>
+          </div>
+
+          <!-- NOMINAL PILIH -->
+          <div class="form-card">
+            <h3><i class="fas fa-layer-group"></i> Pilih Nominal Top Up</h3>
+            <div class="layanan-loading" id="layananLoading">
+              <div class="spinner"></div>
+              <span>Memuat daftar harga...</span>
+            </div>
+            <div class="layanan-grid" id="layananGrid"></div>
+          </div>
+        </div>
+
+        <!-- ORDER SUMMARY -->
+        <div class="topup-right">
+          <div class="order-summary" id="orderSummary">
+            <div class="order-summary-header">
+              <h3><i class="fas fa-receipt"></i> Ringkasan Order</h3>
+            </div>
+            <div class="summary-empty">
+              <i class="fas fa-shopping-cart"></i>
+              <p>Pilih nominal untuk melanjutkan</p>
+            </div>
+          </div>
+
+          <div class="form-card" style="background:var(--primary-light);border-color:var(--primary-soft);">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:0;">
+              <i class="fas fa-shield-halved" style="color:var(--primary);font-size:18px;"></i>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:var(--text-primary);">Transaksi Aman</div>
+                <div style="font-size:12px;color:var(--text-secondary);">Pembayaran terenkripsi & terverifikasi</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="/" class="nav-logo">
+          <span class="logo-icon"><i class="fas fa-fire"></i></span>
+          <span class="logo-text">Malzz<span class="logo-accent">Pedia</span></span>
+        </a>
+        <p>Platform top up game terpercaya.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Menu</h4>
+        <a href="/">Beranda</a>
+        <a href="/products">Produk</a>
+        <a href="/panduan">Panduan</a>
+        <a href="/status">Cek Status</a>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2025 MalzzPedia. All rights reserved.</p></div>
+  </footer>
+
+  <script>
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobileMenu').classList.toggle('active'));
+
+    const params = new URLSearchParams(location.search);
+    const productId = params.get('product');
+    let selectedLayanan = null;
+    let productData = null;
+
+    function formatRupiah(num) { return 'Rp ' + parseInt(num).toLocaleString('id-ID'); }
+
+    async function loadProduct() {
+      if (!productId) return;
+      try {
+        const res = await fetch('/produk');
+        const data = await res.json();
+        productData = data.data.find(p => p._id === productId);
+        if (productData) {
+          document.getElementById('productTitle').textContent = productData.nama;
+          document.getElementById('productDesc').textContent = productData.fulldesk || productData.deks || 'Pilih nominal top up';
+          if (productData.imageurl) {
+            document.getElementById('productDetail').style.display = 'flex';
+            document.getElementById('productImage').src = productData.imageurl;
+            document.getElementById('detailName').textContent = productData.nama;
+            document.getElementById('detailDesc').textContent = productData.deks || '';
+          }
+        }
+      } catch(e) {}
+    }
+
+    async function loadLayanan() {
+      const loading = document.getElementById('layananLoading');
+      const grid = document.getElementById('layananGrid');
+      loading.style.display = 'flex';
+      grid.innerHTML = '';
+      try {
+        const res = await fetch('/api/layanan');
+        const data = await res.json();
+        loading.style.display = 'none';
+        if (data.success && data.data.length > 0) {
+          let filtered = data.data;
+          if (productData && productData.linkorder) {
+            const keyword = productData.linkorder.toLowerCase();
+            const f = data.data.filter(l => l.code && l.code.toLowerCase().includes(keyword));
+            if (f.length) filtered = f;
+          }
+          grid.innerHTML = filtered.map(l => `
+            <div class="layanan-item" onclick="selectLayanan(this,'${l.code}','${l.name.replace(/'/g,"\\'")}','${l.price}')">
+              <div class="layanan-name">${l.name}</div>
+              <div class="layanan-price">${formatRupiah(l.price)}</div>
+            </div>
+          `).join('');
+        } else {
+          grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><p>Tidak ada layanan tersedia saat ini</p></div>';
+        }
+      } catch(e) {
+        loading.style.display = 'none';
+        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><p>Gagal memuat layanan</p></div>';
+      }
+    }
+
+    function selectLayanan(el, code, name, price) {
+      document.querySelectorAll('.layanan-item').forEach(i => i.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedLayanan = { code, name, price };
+      updateSummary();
+    }
+
+    function updateSummary() {
+      if (!selectedLayanan) return;
+      const tujuan = document.getElementById('tujuan').value;
+      document.getElementById('orderSummary').innerHTML = `
+        <div class="order-summary-header">
+          <h3><i class="fas fa-receipt"></i> Ringkasan Order</h3>
+        </div>
+        <div class="summary-item">
+          <span>Produk</span>
+          <strong>${selectedLayanan.name}</strong>
+        </div>
+        <div class="summary-item">
+          <span>ID Game</span>
+          <strong>${tujuan || '<span style="color:var(--text-muted)">Belum diisi</span>'}</strong>
+        </div>
+        <div class="summary-item total">
+          <span>Total Bayar</span>
+          <strong>${formatRupiah(selectedLayanan.price)}</strong>
+        </div>
+        <button class="btn btn-primary btn-full" style="margin-top:16px;" onclick="prosesOrder()">
+          <i class="fas fa-qrcode"></i> Lanjut Bayar
+        </button>
+      `;
+    }
+
+    async function prosesOrder() {
+      const tujuan = document.getElementById('tujuan').value.trim();
+      if (!tujuan) { showToast('Masukkan ID game kamu terlebih dahulu!', 'error'); return; }
+      if (!selectedLayanan) { showToast('Pilih nominal top up terlebih dahulu!', 'error'); return; }
+      const btn = document.querySelector('.order-summary .btn');
+      if (!btn) return;
+      btn.disabled = true;
+      btn.innerHTML = '<div class="spinner-sm"></div> Memproses...';
+      try {
+        const res = await fetch('/api/buat-transaksi', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: selectedLayanan.code, tujuan, price: selectedLayanan.price })
+        });
+        const data = await res.json();
+        if (data.success) {
+          sessionStorage.setItem('trxData', JSON.stringify({
+            internalTrxId: data.internalTrxId,
+            paymentDetails: data.paymentDetails,
+            layananName: selectedLayanan.name,
+            layananPrice: selectedLayanan.price,
+            tujuan
+          }));
+          location.href = '/payment';
+        } else {
+          showToast(data.message || 'Gagal membuat transaksi', 'error');
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-qrcode"></i> Lanjut Bayar';
+        }
+      } catch(e) {
+        showToast('Terjadi kesalahan. Coba lagi.', 'error');
+        if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-qrcode"></i> Lanjut Bayar'; }
+      }
+    }
+
+    function showToast(msg, type) {
+      const t = document.createElement('div');
+      t.className = `toast toast-${type}`;
+      t.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i> ${msg}`;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 3000);
+    }
+
+    document.getElementById('tujuan').addEventListener('input', updateSummary);
+    loadProduct().then(() => loadLayanan());
+  </script>
+</body>
+</html>
