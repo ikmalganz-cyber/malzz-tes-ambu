@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panduan Pembelian - MalzzPedia</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <span class="logo-icon"><i class="fas fa-fire"></i></span>
+        <span class="logo-text">Malzz<span class="logo-accent">Pedia</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="/" class="nav-link">Beranda</a>
+        <a href="/products" class="nav-link">Produk</a>
+        <a href="/panduan" class="nav-link active">Panduan</a>
+        <a href="/status" class="nav-link">Cek Status</a>
+      </div>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="/" class="mobile-link">Beranda</a>
+      <a href="/products" class="mobile-link">Produk</a>
+      <a href="/panduan" class="mobile-link">Panduan</a>
+      <a href="/status" class="mobile-link">Cek Status</a>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <h1>Panduan Pembelian</h1>
+      <p>Ikuti langkah berikut untuk melakukan top up game dengan mudah</p>
+    </div>
+  </div>
+
+  <div class="panduan-section">
+    <div class="container">
+      <div class="panduan-grid">
+        <div class="panduan-step">
+          <div class="step-circle">1</div>
+          <div class="panduan-content">
+            <h3><i class="fas fa-gamepad"></i> Pilih Produk Game</h3>
+            <p>Buka halaman <a href="/products">Produk</a>, temukan game yang ingin kamu top up. Klik pada kartu game untuk melanjutkan ke halaman top up.</p>
+          </div>
+        </div>
+        <div class="panduan-connector"></div>
+        <div class="panduan-step">
+          <div class="step-circle">2</div>
+          <div class="panduan-content">
+            <h3><i class="fas fa-id-badge"></i> Masukkan User ID</h3>
+            <p>Masukkan User ID atau ID akun game kamu dengan benar. Cek ID kamu di profil dalam game. Pastikan tidak ada typo karena top up tidak bisa dikembalikan.</p>
+          </div>
+        </div>
+        <div class="panduan-connector"></div>
+        <div class="panduan-step">
+          <div class="step-circle">3</div>
+          <div class="panduan-content">
+            <h3><i class="fas fa-layer-group"></i> Pilih Nominal</h3>
+            <p>Pilih paket atau nominal top up yang sesuai. Harga sudah termasuk semua biaya layanan. Nominal yang kamu pilih akan tampil di ringkasan order.</p>
+          </div>
+        </div>
+        <div class="panduan-connector"></div>
+        <div class="panduan-step">
+          <div class="step-circle">4</div>
+          <div class="panduan-content">
+            <h3><i class="fas fa-qrcode"></i> Bayar via QRIS</h3>
+            <p>Klik "Lanjut Bayar" dan scan QR code menggunakan e-wallet kamu: GoPay, OVO, Dana, ShopeePay, atau mobile banking apapun yang support QRIS. Bayar sesuai nominal yang tertera.</p>
+          </div>
+        </div>
+        <div class="panduan-connector"></div>
+        <div class="panduan-step">
+          <div class="step-circle">5</div>
+          <div class="panduan-content">
+            <h3><i class="fas fa-check-circle"></i> Selesai!</h3>
+            <p>Setelah bayar dikonfirmasi, top up masuk ke akunmu otomatis. Status real-time tersedia di halaman pembayaran. Cek juga di <a href="/status">halaman status</a> menggunakan ID Order.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <h2>Pertanyaan <span class="gradient-text">Umum</span></h2>
+        <div class="faq-list">
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')"><span>Berapa lama proses top up?</span><i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer"><p>Top up biasanya selesai dalam 1-5 menit setelah pembayaran dikonfirmasi. Kondisi server game yang sibuk bisa mempengaruhi waktu proses, maksimal 15 menit.</p></div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')"><span>Metode pembayaran apa yang tersedia?</span><i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer"><p>Kami menerima QRIS universal yang bisa discan dari semua aplikasi e-wallet dan mobile banking: GoPay, OVO, Dana, ShopeePay, LinkAja, BRI, BCA, BNI, Mandiri, dan semua bank yang support QRIS.</p></div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')"><span>Bagaimana jika top up tidak masuk?</span><i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer"><p>Cek dulu status order di halaman <a href="/status">Cek Status</a>. Jika statusnya pending lebih dari 15 menit setelah pembayaran dikonfirmasi, segera hubungi kami dengan ID order kamu.</p></div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')"><span>Apakah ID game saya aman?</span><i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer"><p>Kami hanya menggunakan ID game untuk keperluan pengiriman top up. Data kamu tidak pernah disimpan untuk keperluan lain atau disebarkan ke pihak manapun.</p></div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')"><span>Bisakah order dibatalkan atau di-refund?</span><i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer"><p>Sayangnya tidak. Setelah pembayaran dikonfirmasi dan proses berjalan, order tidak dapat dibatalkan. Pastikan ID dan nominal sudah benar sebelum bayar.</p></div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question" onclick="this.parentElement.classList.toggle('open')"><span>Berapa batas waktu pembayaran?</span><i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer"><p>Kamu punya waktu 15 menit untuk menyelesaikan pembayaran setelah QR code muncul. Jika lewat dari batas waktu, kamu perlu membuat transaksi baru.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="/" class="nav-logo">
+          <span class="logo-icon"><i class="fas fa-fire"></i></span>
+          <span class="logo-text">Malzz<span class="logo-accent">Pedia</span></span>
+        </a>
+        <p>Platform top up game terpercaya.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Menu</h4>
+        <a href="/">Beranda</a>
+        <a href="/products">Produk</a>
+        <a href="/panduan">Panduan</a>
+        <a href="/status">Cek Status</a>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2025 MalzzPedia. All rights reserved.</p></div>
+  </footer>
+  <script>document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobileMenu').classList.toggle('active'));</script>
+</body>
+</html>
