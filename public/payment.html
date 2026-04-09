@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pembayaran - MalzzPedia</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <span class="logo-icon"><i class="fas fa-fire"></i></span>
+        <span class="logo-text">Malzz<span class="logo-accent">Pedia</span></span>
+      </a>
+    </div>
+  </nav>
+
+  <div class="payment-section">
+    <div class="container-sm">
+      <div class="payment-card">
+        <div class="payment-header">
+          <div class="payment-icon"><i class="fas fa-qrcode"></i></div>
+          <h2>Scan untuk Membayar</h2>
+          <p>Gunakan aplikasi e-wallet atau mobile banking kamu</p>
+        </div>
+        <div class="payment-body">
+          <div class="payment-info-row">
+            <span>Produk</span>
+            <strong id="payLayanan">-</strong>
+          </div>
+          <div class="payment-info-row">
+            <span>ID Game</span>
+            <strong id="payTujuan">-</strong>
+          </div>
+          <div class="payment-info-row total">
+            <span>Total Bayar</span>
+            <strong id="payTotal">-</strong>
+          </div>
+        </div>
+        <div class="qris-wrap">
+          <img id="qrisImage" src="" alt="QRIS Code" class="qris-img" />
+        </div>
+        <div class="payment-countdown">
+          <i class="fas fa-clock"></i>
+          <span>Batas waktu pembayaran: <strong id="countdown">15:00</strong></span>
+        </div>
+        <div class="payment-status" id="paymentStatus">
+          <div class="status-waiting">
+            <div class="pulse-dot"></div>
+            <span>Menunggu konfirmasi pembayaran...</span>
+          </div>
+        </div>
+        <div class="payment-note">
+          <i class="fas fa-info-circle"></i>
+          Jangan tutup halaman ini. Setelah bayar, order akan diproses otomatis dan status akan update di sini.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const trxData = JSON.parse(sessionStorage.getItem('trxData') || 'null');
+    if (!trxData) location.href = '/products';
+
+    function formatRupiah(n) { return 'Rp ' + parseInt(n).toLocaleString('id-ID'); }
+
+    document.getElementById('payLayanan').textContent = trxData?.layananName || '-';
+    document.getElementById('payTujuan').textContent = trxData?.tujuan || '-';
+    document.getElementById('payTotal').textContent = formatRupiah(trxData?.layananPrice || 0);
+
+    const pd = trxData?.paymentDetails;
+    if (pd) {
+      const src = pd.qris_url || (pd.qr_string ? `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(pd.qr_string)}` : '');
+      if (src) document.getElementById('qrisImage').src = src;
+    }
+
+    let timeLeft = 900;
+    const timer = setInterval(() => {
+      timeLeft--;
+      const m = String(Math.floor(timeLeft/60)).padStart(2,'0');
+      const s = String(timeLeft%60).padStart(2,'0');
+      document.getElementById('countdown').textContent = `${m}:${s}`;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        document.getElementById('paymentStatus').innerHTML = '<div class="status-expired"><i class="fas fa-times-circle"></i> Waktu pembayaran habis</div>';
+      }
+    }, 1000);
+
+    let pollInterval, orderId = null;
+
+    async function checkDeposit() {
+      try {
+        const res = await fetch(`/api/cek-status-deposit?trxId=${trxData.internalTrxId}`);
+        const data = await res.json();
+        if (data.depositStatus === 'success') {
+          orderId = data.orderId;
+          clearInterval(pollInterval);
+          document.getElementById('paymentStatus').innerHTML = '<div class="status-success"><i class="fas fa-check-circle"></i> Pembayaran diterima! Memproses order...</div>';
+          pollInterval = setInterval(checkOrder, 4000);
+        } else if (['expired','failed'].includes(data.depositStatus)) {
+          clearInterval(pollInterval);
+          document.getElementById('paymentStatus').innerHTML = '<div class="status-expired"><i class="fas fa-times-circle"></i> Pembayaran gagal atau kadaluarsa</div>';
+        }
+      } catch(e) {}
+    }
+
+    async function checkOrder() {
+      if (!orderId) return;
+      try {
+        const res = await fetch(`/api/cek-status-order?orderId=${orderId}`);
+        const data = await res.json();
+        const status = data?.data?.status;
+        if (status === 'success') {
+          clearInterval(pollInterval); clearInterval(timer);
+          sessionStorage.setItem('orderResult', JSON.stringify({ success: true, orderId, layananName: trxData.layananName, tujuan: trxData.tujuan }));
+          location.href = '/status?orderId=' + orderId;
+        } else if (status === 'failed') {
+          clearInterval(pollInterval);
+          document.getElementById('paymentStatus').innerHTML = '<div class="status-expired"><i class="fas fa-times-circle"></i> Order gagal diproses</div>';
+        }
+      } catch(e) {}
+    }
+
+    pollInterval = setInterval(checkDeposit, 5000);
+    checkDeposit();
+  </script>
+</body>
+</html>
