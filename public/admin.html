@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel - MalzzPedia</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <span class="logo-icon"><i class="fas fa-fire"></i></span>
+        <span class="logo-text">Malzz<span class="logo-accent">Pedia</span></span>
+      </a>
+      <div class="nav-links">
+        <span style="font-size:13px;color:var(--text-muted);font-weight:500;padding:0 8px;">Admin Panel</span>
+        <a href="/mutasi" class="nav-link">Mutasi</a>
+        <a href="/logout" class="nav-link" id="logoutBtn">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-title">Menu</div>
+      <a href="/admin" class="sidebar-link active"><i class="fas fa-home"></i> Dashboard</a>
+      <a href="/mutasi" class="sidebar-link"><i class="fas fa-receipt"></i> Mutasi Transaksi</a>
+      <div class="admin-sidebar-title">Produk</div>
+      <a href="#produk-section" class="sidebar-link"><i class="fas fa-gamepad"></i> Kelola Produk</a>
+      <a href="#tambah-produk" class="sidebar-link"><i class="fas fa-plus-circle"></i> Tambah Produk</a>
+      <div class="admin-sidebar-title">Aksi</div>
+      <a href="/" class="sidebar-link" target="_blank"><i class="fas fa-external-link-alt"></i> Lihat Website</a>
+      <a href="/logout" class="sidebar-link" style="color:var(--danger)"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </aside>
+
+    <main class="admin-main">
+      <h2><i class="fas fa-chart-bar"></i> Dashboard</h2>
+
+      <div class="stats-row" id="statsRow">
+        <div class="stat-card">
+          <div class="stat-card-icon blue"><i class="fas fa-box"></i></div>
+          <div class="stat-card-body">
+            <div class="stat-card-label">Total Produk</div>
+            <div class="stat-card-num" id="statProduk">-</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon green"><i class="fas fa-check-circle"></i></div>
+          <div class="stat-card-body">
+            <div class="stat-card-label">Order Sukses</div>
+            <div class="stat-card-num" id="statSukses">-</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon yellow"><i class="fas fa-clock"></i></div>
+          <div class="stat-card-body">
+            <div class="stat-card-label">Order Pending</div>
+            <div class="stat-card-num" id="statPending">-</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon purple"><i class="fas fa-coins"></i></div>
+          <div class="stat-card-body">
+            <div class="stat-card-label">Total Profit</div>
+            <div class="stat-card-num" id="statProfit">-</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tambah-produk" class="table-card" style="margin-bottom:24px;">
+        <div class="table-card-header">
+          <h3><i class="fas fa-plus-circle"></i> Tambah Produk</h3>
+        </div>
+        <div style="padding:24px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="form-group">
+              <label>Nama Produk</label>
+              <input type="text" id="inp-nama" placeholder="Contoh: Mobile Legends" />
+            </div>
+            <div class="form-group">
+              <label>Deskripsi Singkat</label>
+              <input type="text" id="inp-deks" placeholder="Top Up Diamond" />
+            </div>
+            <div class="form-group">
+              <label>URL Gambar</label>
+              <input type="text" id="inp-imageurl" placeholder="https://..." />
+            </div>
+            <div class="form-group">
+              <label>Kode Layanan (untuk filter)</label>
+              <input type="text" id="inp-linkorder" placeholder="Contoh: ml, ff, pubg" />
+            </div>
+            <div class="form-group" style="grid-column:1/-1;">
+              <label>Deskripsi Lengkap</label>
+              <textarea id="inp-fulldesk" rows="3" style="resize:vertical;" placeholder="Masukkan deskripsi lengkap produk..."></textarea>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="tambahProduk()">
+            <i class="fas fa-plus"></i> Tambah Produk
+          </button>
+          <div id="tambahMsg" style="margin-top:12px;font-size:13px;"></div>
+        </div>
+      </div>
+
+      <div id="produk-section" class="table-card">
+        <div class="table-card-header">
+          <h3><i class="fas fa-gamepad"></i> Daftar Produk</h3>
+          <button class="btn btn-outline btn-sm" onclick="loadProduk()"><i class="fas fa-sync"></i> Refresh</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="data-table" id="produkTable">
+            <thead>
+              <tr>
+                <th>Gambar</th>
+                <th>Nama</th>
+                <th>Deskripsi</th>
+                <th>Kode</th>
+                <th>Tanggal</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="produkBody">
+              <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">Memuat...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await fetch('/logout');
+      location.href = '/login';
+    });
+
+    function formatRupiah(n) { return 'Rp ' + parseInt(n || 0).toLocaleString('id-ID'); }
+
+    async function loadStats() {
+      try {
+        const [produkRes, mutasiRes] = await Promise.all([
+          fetch('/produk'), fetch('/api/mutasi')
+        ]);
+        const produkData = await produkRes.json();
+        const mutasiData = await mutasiRes.json();
+
+        document.getElementById('statProduk').textContent = produkData.data?.length || 0;
+
+        if (mutasiData.success) {
+          const txs = mutasiData.data;
+          const sukses = txs.filter(t => t.statusOrder === 'success').length;
+          const pending = txs.filter(t => t.statusOrder === 'pending' || t.statusOrder === 'process').length;
+          const profit = txs.reduce((a, b) => a + (b.untung || 0), 0);
+          document.getElementById('statSukses').textContent = sukses;
+          document.getElementById('statPending').textContent = pending;
+          document.getElementById('statProfit').textContent = formatRupiah(profit);
+        }
+      } catch(e) {}
+    }
+
+    async function loadProduk() {
+      const tbody = document.getElementById('produkBody');
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">Memuat...</td></tr>';
+      try {
+        const res = await fetch('/produk');
+        const data = await res.json();
+        if (data.data && data.data.length) {
+          tbody.innerHTML = data.data.map(p => `
+            <tr>
+              <td>${p.imageurl ? `<img src="${p.imageurl}" style="width:48px;height:36px;object-fit:cover;border-radius:6px;border:1px solid var(--border);" onerror="this.style.display='none'" />` : '<span style="color:var(--text-muted);font-size:12px;">-</span>'}</td>
+              <td><strong>${p.nama}</strong></td>
+              <td style="color:var(--text-secondary);">${p.deks || '-'}</td>
+              <td><span class="badge badge-default">${p.linkorder || '-'}</span></td>
+              <td style="color:var(--text-muted);font-size:12px;">${new Date(p.tanggal).toLocaleDateString('id-ID')}</td>
+              <td><button class="btn btn-danger btn-sm" onclick="hapusProduk('${p._id}')"><i class="fas fa-trash"></i></button></td>
+            </tr>
+          `).join('');
+        } else {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">Belum ada produk</td></tr>';
+        }
+      } catch(e) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--danger);">Gagal memuat data</td></tr>';
+      }
+    }
+
+    async function tambahProduk() {
+      const nama = document.getElementById('inp-nama').value.trim();
+      if (!nama) { showMsg('tambahMsg', 'Nama produk harus diisi.', 'error'); return; }
+      const body = {
+        nama,
+        deks: document.getElementById('inp-deks').value.trim(),
+        fulldesk: document.getElementById('inp-fulldesk').value.trim(),
+        imageurl: document.getElementById('inp-imageurl').value.trim(),
+        linkorder: document.getElementById('inp-linkorder').value.trim(),
+      };
+      try {
+        const res = await fetch('/produk', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (data.success) {
+          showMsg('tambahMsg', 'Produk berhasil ditambahkan!', 'success');
+          ['inp-nama','inp-deks','inp-fulldesk','inp-imageurl','inp-linkorder'].forEach(id => document.getElementById(id).value = '');
+          loadProduk();
+          loadStats();
+        } else {
+          showMsg('tambahMsg', data.message || 'Gagal menambahkan produk.', 'error');
+        }
+      } catch(e) {
+        showMsg('tambahMsg', 'Terjadi kesalahan.', 'error');
+      }
+    }
+
+    async function hapusProduk(id) {
+      if (!confirm('Hapus produk ini?')) return;
+      try {
+        const res = await fetch(`/produk/${id}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) { loadProduk(); loadStats(); }
+      } catch(e) {}
+    }
+
+    function showMsg(elId, msg, type) {
+      const el = document.getElementById(elId);
+      el.style.color = type === 'error' ? 'var(--danger)' : 'var(--success)';
+      el.textContent = msg;
+      setTimeout(() => { el.textContent = ''; }, 3000);
+    }
+
+    loadStats();
+    loadProduk();
+  </script>
+</body>
+</html>
