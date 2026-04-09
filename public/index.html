@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malzz Pedia - Top Up Game Murah Resmi</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <span class="logo-icon"><i class="fas fa-fire"></i></span>
+        <span class="logo-text">Malzz<span class="logo-accent">Pedia</span></span>
+      </a>
+      <div class="nav-links">
+        <a href="/" class="nav-link active">Beranda</a>
+        <a href="/products" class="nav-link">Produk</a>
+        <a href="/panduan" class="nav-link">Panduan</a>
+        <a href="/status" class="nav-link">Cek Status</a>
+      </div>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="/" class="mobile-link">Beranda</a>
+      <a href="/products" class="mobile-link">Produk</a>
+      <a href="/panduan" class="mobile-link">Panduan</a>
+      <a href="/status" class="mobile-link">Cek Status</a>
+    </div>
+  </nav>
+
+  <!-- HERO BANNER -->
+  <div class="hero-banner">
+    <div class="hero-banner-inner">
+      <div class="hero-text">
+        <div class="hero-badge-pill">
+          <i class="fas fa-bolt"></i> #1 Top Up Platform Terpercaya
+        </div>
+        <h1 class="hero-title">
+          Top Up Game<br /><span>Murah, Cepat,</span><br />Langsung Masuk!
+        </h1>
+        <p class="hero-subtitle">Ratusan produk game tersedia. Proses otomatis, bayar QRIS, selesai dalam hitungan detik.</p>
+        <div class="hero-btns">
+          <a href="/products" class="btn-hero-primary"><i class="fas fa-gamepad"></i> Top Up Sekarang</a>
+          <a href="/panduan" class="btn-hero-outline"><i class="fas fa-book"></i> Cara Beli</a>
+        </div>
+        <div class="hero-trust">
+          <div class="hero-trust-item"><i class="fas fa-bolt"></i> Proses Instan</div>
+          <div class="hero-trust-item"><i class="fas fa-shield-halved"></i> 100% Aman</div>
+          <div class="hero-trust-item"><i class="fas fa-qrcode"></i> Bayar QRIS</div>
+          <div class="hero-trust-item"><i class="fas fa-headset"></i> Support 24/7</div>
+        </div>
+      </div>
+      <div class="hero-cards">
+        <div class="h-card floating">
+          <div class="h-card-icon orange"><i class="fas fa-check-circle"></i></div>
+          <div class="h-card-text">
+            <strong>Order Sukses!</strong>
+            <span>Mobile Legends · 86 Diamond</span>
+          </div>
+        </div>
+        <div class="h-card floating delay-1">
+          <div class="h-card-icon green"><i class="fas fa-bolt"></i></div>
+          <div class="h-card-text">
+            <strong>Proses Instan</strong>
+            <span>Kurang dari 60 detik</span>
+          </div>
+        </div>
+        <div class="h-card floating delay-2">
+          <div class="h-card-icon purple"><i class="fas fa-fire"></i></div>
+          <div class="h-card-text">
+            <strong>Harga Terbaik</strong>
+            <span>Hemat hingga 15%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+    <div class="trust-bar-inner">
+      <div class="trust-item"><i class="fas fa-lock"></i> Pembayaran Aman</div>
+      <div class="trust-item"><i class="fas fa-bolt"></i> Proses Otomatis</div>
+      <div class="trust-item"><i class="fas fa-star"></i> 10.000+ Transaksi</div>
+      <div class="trust-item"><i class="fas fa-clock"></i> Layanan 24/7</div>
+      <div class="trust-item"><i class="fas fa-qrcode"></i> Bayar via QRIS</div>
+    </div>
+  </div>
+
+  <!-- GAME LIST -->
+  <div class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>
+          <span class="section-icon"><i class="fas fa-fire"></i></span>
+          Game <span class="gradient-text">Populer</span>
+        </h2>
+        <a href="/products">Lihat Semua <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="games-grid" id="homeGamesGrid">
+        <div class="card-skeleton"></div>
+        <div class="card-skeleton"></div>
+        <div class="card-skeleton"></div>
+        <div class="card-skeleton"></div>
+        <div class="card-skeleton"></div>
+        <div class="card-skeleton"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="features" style="background:white;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div class="container">
+      <div class="section-header" style="flex-direction:column;align-items:center;text-align:center;margin-bottom:32px;">
+        <h2>Kenapa <span class="gradient-text">Malzz Pedia?</span></h2>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon orange"><i class="fas fa-bolt"></i></div>
+          <h3>Super Cepat</h3>
+          <p>Sistem otomatis memproses top up dalam hitungan detik. Tidak ada antrian, tidak ada delay.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon yellow"><i class="fas fa-coins"></i></div>
+          <h3>Harga Terjangkau</h3>
+          <p>Harga lebih murah dari reseller biasa. Hemat lebih banyak di setiap transaksi.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon green"><i class="fas fa-shield-halved"></i></div>
+          <h3>100% Terpercaya</h3>
+          <p>Ribuan transaksi sukses setiap bulannya. Sistem pembayaran terverifikasi dan aman.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon purple"><i class="fas fa-qrcode"></i></div>
+          <h3>QRIS Universal</h3>
+          <p>Bayar dengan semua e-wallet & mobile banking: GoPay, OVO, Dana, ShopeePay, dll.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="steps-section">
+    <div class="container">
+      <div class="section-header" style="flex-direction:column;align-items:center;text-align:center;margin-bottom:36px;">
+        <h2>Cara <span class="gradient-text">Pembelian</span></h2>
+        <p style="font-size:15px;color:var(--text-secondary);margin-top:6px;">4 langkah mudah, top up masuk langsung ke akun kamu</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <div class="step-icon"><i class="fas fa-gamepad"></i></div>
+          <h3>Pilih Game</h3>
+          <p>Temukan game favoritmu dan klik untuk mulai top up.</p>
+        </div>
+        <div class="step-arrow"><i class="fas fa-chevron-right"></i></div>
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <div class="step-icon"><i class="fas fa-id-card"></i></div>
+          <h3>Masukkan ID</h3>
+          <p>Isi User ID game kamu. Pastikan sudah benar.</p>
+        </div>
+        <div class="step-arrow"><i class="fas fa-chevron-right"></i></div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <div class="step-icon"><i class="fas fa-qrcode"></i></div>
+          <h3>Scan QRIS</h3>
+          <p>Scan QR code dan bayar via e-wallet pilihanmu.</p>
+        </div>
+        <div class="step-arrow"><i class="fas fa-chevron-right"></i></div>
+        <div class="step-card">
+          <div class="step-num">04</div>
+          <div class="step-icon"><i class="fas fa-check-circle"></i></div>
+          <h3>Item Masuk!</h3>
+          <p>Top up otomatis masuk ke akunmu. Selamat main!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="/" class="nav-logo">
+          <span class="logo-icon"><i class="fas fa-fire"></i></span>
+          <span class="logo-text">Malzz<span class="logo-accent">Pedia</span></span>
+        </a>
+        <p>Platform top up game terpercaya dengan harga terbaik dan proses paling cepat.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Menu</h4>
+        <a href="/">Beranda</a>
+        <a href="/products">Produk</a>
+        <a href="/panduan">Panduan</a>
+        <a href="/status">Cek Status</a>
+      </div>
+      <div class="footer-links">
+        <h4>Layanan</h4>
+        <a href="/topup">Top Up Game</a>
+        <a href="/status">Cek Order</a>
+        <a href="/panduan">FAQ</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 MalzzPedia. All rights reserved. Top Up Game Terpercaya.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.toggle('active');
+    });
+
+    const BADGES = ['hot','new','sale',''];
+    async function loadGames() {
+      const grid = document.getElementById('homeGamesGrid');
+      try {
+        const res = await fetch('/produk');
+        const data = await res.json();
+        if (data.success && data.data.length > 0) {
+          grid.innerHTML = data.data.slice(0, 6).map((p, i) => {
+            const badges = ['badge-hot','badge-new','badge-sale','','',''];
+            const badgeLabels = ['HOT','NEW','SALE','','',''];
+            const badge = badges[i] ? `<span class="game-badge ${badges[i]}">${badgeLabels[i]}</span>` : '';
+            return `
+              <a href="/topup?product=${p._id}" class="game-card">
+                ${badge}
+                <div class="game-thumb">
+                  ${p.imageurl
+                    ? `<img class="game-thumb-img" src="${p.imageurl}" alt="${p.nama}" onerror="this.parentElement.innerHTML='<div class=game-thumb-placeholder><i class=fas fa-gamepad></i></div>'" />`
+                    : `<div class="game-thumb-placeholder"><i class="fas fa-gamepad"></i></div>`}
+                </div>
+                <div class="game-info">
+                  <div class="game-name">${p.nama}</div>
+                  <div class="game-desc">${p.deks || 'Top Up Game'}</div>
+                  <div class="game-btn"><i class="fas fa-bolt"></i> Top Up</div>
+                </div>
+              </a>
+            `;
+          }).join('');
+        } else {
+          grid.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>Belum ada produk tersedia</p><p style="font-size:12px;margin-top:6px;">Tambahkan produk melalui <a href="/admin" style="color:var(--primary)">Admin Panel</a></p></div>';
+        }
+      } catch(e) {
+        grid.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Gagal memuat produk. Pastikan server berjalan.</p></div>';
+      }
+    }
+    loadGames();
+  </script>
+</body>
+</html>
